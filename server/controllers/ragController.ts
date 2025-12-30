@@ -3,12 +3,15 @@ import { ask, loadAllData } from '../services/ragService';
 
 export const loadData = async (_: Request, res: Response): Promise<void> => {
   try {
+    console.log('Starting data load request...');
     await loadAllData();
-    res.status(200).json({ ok: true });
+    console.log('Data load completed successfully');
+    res.status(200).json({ ok: true, message: 'Data loaded successfully' });
   } catch (error) {
+    console.error('Error in loadData controller:', error);
     res.status(500).json({
-      answer: '',
-      error: 'Failed to load data',
+      ok: false,
+      error: error instanceof Error ? error.message : 'Failed to load data',
     });
   }
 };
